@@ -59,7 +59,7 @@ void Sim7600Component::update() {
 }
 
 void Sim7600Component::send_cmd_(const std::string &message) {
-  ESP_LOGV(TAG, "S: %s - %d", message.c_str(), this->state_);
+  ESP_LOGI(TAG, "S: %s - %d", message.c_str(), this->state_);
   this->watch_dog_ = 0;
   this->write_str(message.c_str());
   this->write_byte(ASCII_CR);
@@ -70,7 +70,7 @@ void Sim7600Component::parse_cmd_(std::string message) {
   if (message.empty())
     return;
 
-  ESP_LOGV(TAG, "R: %s - %d", message.c_str(), this->state_);
+  ESP_LOGI(TAG, "R: %s - %d", message.c_str(), this->state_);
 
   if (this->state_ != STATE_RECEIVE_SMS) {
     if (message == "RING") {
