@@ -130,7 +130,7 @@ void Sim7600Component::parse_cmd_(std::string message) {
     }
     case STATE_START_GPS_SESSION:
       send_cmd_("AT+CGPS=1");
-      this->state_ = STATE_GET_GPS_LOCATION:
+      this->state_ = STATE_GET_GPS_LOCATION;
       this->expext_ack_ = true;
       break;
     case STATE_GET_GPS_LOCATION:
@@ -138,7 +138,7 @@ void Sim7600Component::parse_cmd_(std::string message) {
         ESP_LOGD(TAG, "GPS Session Started.");
         send_cmd_("AT+CGPSINFO");
         this->expect_ack_ = true;
-        this->state_ = STATE_END_GPS_SESSION:
+        this->state_ = STATE_END_GPS_SESSION;
       }
       else
       {
