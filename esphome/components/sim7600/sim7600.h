@@ -45,6 +45,9 @@ enum State {
   STATE_SEND_USSD2,
   STATE_CHECK_USSD,
   STATE_RECEIVED_USSD
+  STATE_START_GPS_SESSION,
+  STATE_GET_GPS_LOCATION,
+  STATE_END_GPS_SESSION
 };
 
 class Sim7600Component : public uart::UARTDevice, public PollingComponent {

@@ -128,6 +128,31 @@ void Sim7600Component::parse_cmd_(std::string message) {
 
       // Else fall thru ...
     }
+    case STATE_START_GPS_SESSION:
+      send_cmd_("AT+CGPS=1");
+      this->state = STATE_GET_GPS_LOCATION:
+      this->expext_ack = true;
+      break;
+    case STATE_GET_GPS_LOCATION:
+      if (message == "OK") {
+        ESP_LOGD(TAG, "GPS Session Started.");
+        send_cmd_("AT+CGPSINFO");
+        this->expect_ack = true;
+        this->state = STATE_END_GPS_SESSION:
+      }
+      else
+      {
+        ESP_LOGD(TAG, "GPS Session Failed.")
+      }
+      break;
+    case STATE_END_GPS_SESSION:
+      ESP_LOGD(TAG, "GPS Info: '%s'", message.c_str());
+      if (message.compare(0, 10, "+CGPSINFO:") == 0) {
+      {
+          //We have GPS Data.
+      }
+      this->state = STATE_CHECK_SMS;
+      break;
     case STATE_CHECK_SMS:
       send_cmd_("AT+CMGL=\"ALL\"");
       this->state_ = STATE_PARSE_SMS_RESPONSE;
