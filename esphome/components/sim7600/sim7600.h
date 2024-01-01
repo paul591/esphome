@@ -1,5 +1,6 @@
 #pragma once
-
+#define USE_BINARY_SENSOR 1
+#define USE_SENSOR 1
 #include <utility>
 
 #include "esphome/core/defines.h"

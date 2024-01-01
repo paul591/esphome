@@ -106,6 +106,8 @@ void Sim7600Component::parse_cmd_(std::string message) {
   }
 
   switch (this->state_) {
+     ESP_LOGI(TAG, "Here 1", message.c_str(), this->state_);
+
     case STATE_INIT: {
       // While we were waiting for update to check for messages, this notifies a message
       // is available.
@@ -449,7 +451,7 @@ void Sim7600Component::loop() {
     if (this->read_pos_ == SIM7600_READ_BUFFER_LENGTH)
       this->read_pos_ = 0;
 
-    ESP_LOGVV(TAG, "Buffer pos: %u %d", this->read_pos_, byte);  // NOLINT
+    ESP_LOGI(TAG, "Buffer pos: %u %d", this->read_pos_, byte);  // NOLINT
 
     if (byte == ASCII_CR)
       continue;
