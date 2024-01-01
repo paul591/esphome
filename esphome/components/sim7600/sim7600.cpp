@@ -14,7 +14,7 @@ void Sim7600Component::update() {
   if (this->watch_dog_++ == 2) {
     this->state_ = STATE_INIT;
     this->write(26);
-    ESP_LOGD("Watchdog Fail");
+    ESP_LOGD(TAG, "Watchdog Fail");
   }
 
   if (this->expect_ack_)
@@ -476,7 +476,7 @@ void Sim7600Component::loop() {
        || this->send_pending_ || this->dial_pending_ || this->connect_pending_ || this->disconnect_pending_)) {
     this->update();
   }
-  ESP_LOGD("Loop");
+  ESP_LOGD(TAG, "Loop");
 }
 
 void Sim7600Component::send_sms(const std::string &recipient, const std::string &message) {
