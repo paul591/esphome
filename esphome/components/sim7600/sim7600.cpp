@@ -44,6 +44,7 @@ void Sim7600Component::update() {
       this->state_ = STATE_CHECK_CALL;
       return;
     } else {
+      ESP_LOGI(TAG, "Here 1");
       this->send_cmd_("AT");
       this->state_ = STATE_SETUP_CMGF;
     }
@@ -56,6 +57,10 @@ void Sim7600Component::update() {
     this->send_cmd_(delete_cmd);
     this->state_ = STATE_CHECK_SMS;
     this->expect_ack_ = true;
+  }
+  else
+  {
+      ESP_LOGI(TAG, "Here 2");
   }
 }
 
@@ -107,8 +112,6 @@ void Sim7600Component::parse_cmd_(std::string message) {
   }
 
   switch (this->state_) {
-     ESP_LOGI(TAG, "Here 1", message.c_str(), this->state_);
-
     case STATE_INIT: {
       // While we were waiting for update to check for messages, this notifies a message
       // is available.
@@ -128,35 +131,8 @@ void Sim7600Component::parse_cmd_(std::string message) {
         }
         break;
       }
-
       // Else fall thru ...
     }
-    case STATE_START_GPS_SESSION:
-      send_cmd_("AT+CGPS=1");
-      this->state_ = STATE_GET_GPS_LOCATION;
-      this->expect_ack_ = true;
-      break;
-    case STATE_GET_GPS_LOCATION:
-      if (message == "OK") {
-        ESP_LOGD(TAG, "GPS Session Started.");
-        send_cmd_("AT+CGPSINFO");
-        this->expect_ack_ = true;
-        this->state_ = STATE_END_GPS_SESSION;
-      }
-      else
-      {
-        ESP_LOGD(TAG, "GPS Session Failed.");
-      }
-      break;
-    case STATE_END_GPS_SESSION:
-      ESP_LOGD(TAG, "GPS Info: '%s'", message.c_str());
-      if (message.compare(0, 10, "+CGPSINFO:") == 0)
-      {
-          //We have GPS Data.
-      }
-      this->expect_ack_ = true;
-      this->state_= STATE_CHECK_SMS;
-      break;
     case STATE_CHECK_SMS:
       send_cmd_("AT+CMGL=\"ALL\"");
       this->state_ = STATE_PARSE_SMS_RESPONSE;
